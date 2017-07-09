@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="200dp"
+  android:background="@mipmap/ic_splash"
+  android:gravity="bottom"
+  android:orientation="vertical"
+  android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+  <ImageView
+    android:id="@+id/avatar"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:layout_marginTop="35dp"
+    android:layout_marginStart="16dp"
+    android:src="@drawable/shape_glide_img_error"/>
+
+  <TextView
+    android:id="@+id/loginName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_marginStart="16dp"
+    android:textColor="@color/white"
+    android:textSize="@dimen/text_dimens_15sp"
+    tools:text="loginName"/>
+  <TextView
+    android:id="@+id/email"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="26dp"
+    android:layout_marginStart="16dp"
+    android:text="@string/click_to_login"
+    android:textColor="@color/white"
+    android:textSize="@dimen/text_dimens_15sp"
+    />
+
+</LinearLayout>

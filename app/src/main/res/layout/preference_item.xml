@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="16dp"
+  android:background="@drawable/bg_list_view_item"
+  android:gravity="center_vertical"
+  android:minHeight="?android:listPreferredItemHeight"
+  android:orientation="horizontal"
+  >
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    >
+
+    <TextView
+      android:id="@android:id/title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ellipsize="marquee"
+      android:fadingEdge="horizontal"
+      android:maxLines="1"
+      android:textColor="@color/color_333333"
+      android:textSize="@dimen/text_dimens_14sp"
+      tools:text="title"
+      />
+
+    <TextView
+      android:id="@android:id/summary"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@android:id/title"
+      android:textColor="@color/color_secondary_999999"
+      android:textSize="@dimen/text_dimens_12sp"
+      tools:text="summary"/>
+
+  </RelativeLayout>
+
+  <LinearLayout
+    android:id="@android:id/widget_frame"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|center_vertical"
+    android:orientation="vertical"
+    >
+
+  </LinearLayout>
+
+</LinearLayout>

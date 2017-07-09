@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/windowBackground"
+  android:fitsSystemWindows="true"
+  android:orientation="vertical"
+  tools:context="com.example.bill.delta.ui.user.UserReplies.MyUserRepliesActivity"
+  >
+  <include
+    layout="@layout/toolbar"
+    />
+  <FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <com.example.bill.delta.view.widget.EmptyRecyclerView
+      android:id="@+id/rv_replies"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/white"
+      android:overScrollMode="never"
+      />
+    <TextView
+      android:id="@+id/empty_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:text="评论为空"
+      android:textColor="@color/color_secondary_999999"
+      android:textSize="@dimen/text_dimens_17sp"
+      />
+  </FrameLayout>
+</LinearLayout>

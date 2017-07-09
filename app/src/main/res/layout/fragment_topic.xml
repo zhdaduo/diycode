@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/windowBackground"
+  >
+  <com.example.bill.delta.view.widget.EmptyRecyclerView
+    android:id="@+id/rv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    />
+
+  <TextView
+    android:id="@+id/empty_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:minHeight="200dp"
+    android:text="没有内容"
+    android:textColor="@color/color_secondary_999999"
+    android:textSize="@dimen/text_dimens_17sp"
+    />
+</FrameLayout>
