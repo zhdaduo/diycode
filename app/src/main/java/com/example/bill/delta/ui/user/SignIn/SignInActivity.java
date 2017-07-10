@@ -13,10 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.example.bill.delta.AndroidApplication;
 import com.example.bill.delta.R;
 import com.example.bill.delta.bean.user.Token;
 import com.example.bill.delta.bean.user.UserDetailInfo;
+import com.example.bill.delta.navigation.Navigator;
 import com.example.bill.delta.ui.base.BaseActivity;
 import com.example.bill.delta.ui.user.User.UserMVP;
 import com.example.bill.delta.ui.user.User.UserModule;
@@ -43,6 +45,7 @@ public class SignInActivity extends BaseActivity implements SignInMVP.View, User
   SignInPresenter signInPresenter;
   @Inject
   UserPresenter userPresenter;
+  @Inject Navigator navigator;
 
   public static Intent getCallingIntent(Context context) {
     Intent callingIntent = new Intent(context, SignInActivity.class);
@@ -103,6 +106,18 @@ public class SignInActivity extends BaseActivity implements SignInMVP.View, User
   @Override
   public void getUser(UserDetailInfo userDetailInfo) {
 
+  }
+
+  @OnClick(R.id.sign_up) void SignUp() {
+    navigator.navigateToSignUp(this);
+  }
+
+  @OnClick(R.id.forget_password) void ForgotPassword() {
+    navigator.navigateToForget(this);
+  }
+
+  @OnClick({R.id.sign_github, R.id.sign_weibo}) void NotComplete() {
+    showToastMessage("Function not Complete");
   }
 
   @Override

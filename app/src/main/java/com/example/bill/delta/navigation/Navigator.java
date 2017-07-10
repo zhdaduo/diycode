@@ -2,6 +2,7 @@ package com.example.bill.delta.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import com.example.bill.delta.ui.main.MainActivity;
 import com.example.bill.delta.ui.news.CreateNews.CreateNewsActivity;
 import com.example.bill.delta.ui.notification.NotificationActivity;
@@ -202,6 +203,27 @@ public class Navigator {
     if (context != null) {
       Intent intentToLaunch = SearchActivity.getCallingIntent(context);
       context.startActivity(intentToLaunch);
+    }
+  }
+
+  /**
+   * open browser and goto sign up page
+   *
+   * @param context A Context needed to open the destiny activity.
+   */
+  public void navigateToSignUp(Context context) {
+    if (context != null) {
+      Intent intent = new Intent(Intent.ACTION_VIEW);
+      intent.setData(Uri.parse("https://www.diycode.cc/account/sign_up"));
+      context.startActivity(intent);
+    }
+  }
+
+  public void navigateToForget(Context context) {
+    if (context != null) {
+      Intent intent = new Intent(Intent.ACTION_VIEW);
+      intent.setData(Uri.parse("https://www.diycode.cc/account/password/new"));
+      context.startActivity(intent);
     }
   }
 }
