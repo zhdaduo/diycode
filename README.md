@@ -2,4 +2,4 @@
 diycode社区第三方app. MVP + Dagger2 + Retrofit + EventBus + ButterKnife
 # preview
 
-![]( diycode/image/screenshot.png )
+![](https://github.com/zhdaduo/diycode/raw/master/image/screenshot.png)
