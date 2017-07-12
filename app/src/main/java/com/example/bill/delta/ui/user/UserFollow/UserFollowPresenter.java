@@ -19,6 +19,7 @@ public class UserFollowPresenter implements UserFollowMVP.Presenter {
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN) public void getUserFollowing(UserFollowingEvent event) {
+    mView.hideLoading();
     mView.getUserFollowing(event.getUserInfoList());
   }
 

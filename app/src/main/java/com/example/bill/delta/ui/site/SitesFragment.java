@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,6 +15,7 @@ import com.example.bill.delta.AndroidApplication;
 import com.example.bill.delta.R;
 import com.example.bill.delta.bean.site.Site;
 import com.example.bill.delta.navigation.Navigator;
+import com.example.bill.delta.ui.base.BaseFragment;
 import com.example.bill.delta.util.LogUtil;
 import com.example.bill.delta.view.Listener.ISiteListener;
 import com.example.bill.delta.view.adapter.site.SiteName;
@@ -26,7 +28,7 @@ import javax.inject.Inject;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-public class SitesFragment extends Fragment implements SiteBaseMVP.View {
+public class SitesFragment extends BaseFragment implements SiteBaseMVP.View {
 
   private static final String TAG = "SitesFragment";
   private final static int SPAN_COUNT = 2;
@@ -35,7 +37,7 @@ public class SitesFragment extends Fragment implements SiteBaseMVP.View {
   private boolean isFirstLoad = true;
 
   @BindView(R.id.rv_site_category) EmptyRecyclerView rvSiteCategory;
-  @BindView(R.id.empty_view) TextView emptyView;
+  @BindView(R.id.empty_view) ProgressBar emptyView;
 
   @Inject SiteBasePresenter siteBasePresenter;
   @Inject Navigator navigator;
@@ -55,6 +57,11 @@ public class SitesFragment extends Fragment implements SiteBaseMVP.View {
     adapter = new MultiTypeAdapter(items);
     adapter.register(SiteName.class, new SiteNameViewProvider());
     adapter.register(SitesName.class, new SitesNameViewProvider(listener));
+  }
+
+  @Override
+  public void fetchData() {
+    siteBasePresenter.getSite();
   }
 
   @Nullable
@@ -103,7 +110,6 @@ public class SitesFragment extends Fragment implements SiteBaseMVP.View {
       siteBasePresenter.bind(this);
       siteBasePresenter.start();
       if (isFirstLoad) {
-        siteBasePresenter.getSite();
         isFirstLoad = false;
       }
     }

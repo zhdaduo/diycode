@@ -10,7 +10,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.example.bill.delta.AndroidApplication;
@@ -18,6 +19,7 @@ import com.example.bill.delta.R;
 import com.example.bill.delta.bean.topic.Topic;
 import com.example.bill.delta.bean.user.UserInfo;
 import com.example.bill.delta.navigation.Navigator;
+import com.example.bill.delta.ui.base.BaseFragment;
 import com.example.bill.delta.ui.user.UserFollow.UserFollowMVP;
 import com.example.bill.delta.ui.user.UserFollow.UserFollowModule;
 import com.example.bill.delta.ui.user.UserFollow.UserFollowPresenter;
@@ -39,7 +41,7 @@ import javax.inject.Inject;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-public class TopicFragment  extends Fragment implements TopicsMVP.View, UserFollowMVP.View {
+public class TopicFragment  extends BaseFragment implements TopicsMVP.View, UserFollowMVP.View {
 
   public static final String TYPE = "type";
   public static final int TYPE_ALL = 1;
@@ -57,7 +59,7 @@ public class TopicFragment  extends Fragment implements TopicsMVP.View, UserFoll
   private boolean isFirstLoad = true;
 
   @BindView(R.id.rv) EmptyRecyclerView rv;
-  @BindView(R.id.empty_view) TextView emptyView;
+  @BindView(R.id.empty_view) ProgressBar empty_view;
 
   @Inject TopicsPresenter topicsPresenter;
   @Inject UserTopicsPresenter userTopicsPresenter;
@@ -101,12 +103,6 @@ public class TopicFragment  extends Fragment implements TopicsMVP.View, UserFoll
     return rootView;
   }
 
-  @Override
-  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-
-  }
-
   private void initAdapter() {
     items = new Items();
     adapter = new MultiTypeAdapter(items);
@@ -119,8 +115,8 @@ public class TopicFragment  extends Fragment implements TopicsMVP.View, UserFoll
     linearLayoutManager = new LinearLayoutManager(getContext());
     rv.setLayoutManager(linearLayoutManager);
     rv.setAdapter(adapter);
+    rv.setEmptyView(empty_view);
     rv.addItemDecoration(new DividerListItemDecoration(getContext()));
-    rv.setEmptyView(emptyView);
     loadMore();
   }
 
@@ -153,6 +149,24 @@ public class TopicFragment  extends Fragment implements TopicsMVP.View, UserFoll
         lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
       }
     });
+  }
+
+  @Override
+  public void hideLoading() {
+      //rl_progress.setVisibility(View.GONE);
+       empty_view.setVisibility(View.GONE);
+       rv.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void showRetry(String msg) {
+    //rl_progress.setVisibility(View.GONE);
+    //retry.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void hideRetry() {
+    //retry.setVisibility(View.GONE);
   }
 
   @Override
@@ -245,24 +259,18 @@ public class TopicFragment  extends Fragment implements TopicsMVP.View, UserFoll
 
     LogUtil.v(TAG, "isFirstLoad: " + isFirstLoad);
     if (isFirstLoad) {
-      if (!TextUtils.isEmpty(loginName)) {
-        if (type == TYPE_CREATE) {
-          userTopicsPresenter.getUserCreateTopics(loginName,
-              offset);
-        } else if (type == TYPE_FAVORITE) {
-          userTopicsPresenter.getUserFavoriteTopics(loginName,
-              offset);
-        } else if (type == TYPE_USERFOLLOWING) {
-          userFollowPresenter.getUserFollowing(loginName, offset);
-        }
 
-      } else {
-        // TODO 置顶帖子的获取
-        topicsPresenter.getTopTopics();
-        topicsPresenter.getTopics(offset);
-      }
       // 标记 Fragment 已经进行过第一次加载
       isFirstLoad = false;
+    }
+    if (type == TYPE_CREATE) {
+      userTopicsPresenter.getUserCreateTopics(loginName,
+          offset);
+    } else if (type == TYPE_FAVORITE) {
+      userTopicsPresenter.getUserFavoriteTopics(loginName,
+          offset);
+    } else if (type == TYPE_USERFOLLOWING) {
+      userFollowPresenter.getUserFollowing(loginName, offset);
     }
   }
 
@@ -279,19 +287,15 @@ public class TopicFragment  extends Fragment implements TopicsMVP.View, UserFoll
     super.onStop();
   }
 
-  @Override public void onSaveInstanceState(Bundle outState) {
-    LogUtil.v(TAG, "onSaveInstanceState");
-    super.onSaveInstanceState(outState);
-  }
+  @Override
+  public void fetchData() {
+    if (!TextUtils.isEmpty(loginName)) {
 
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    LogUtil.v(TAG, "onActivityCreated");
-    super.onActivityCreated(savedInstanceState);
-  }
-
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-    LogUtil.v(TAG, "onAttach");
+    } else {
+      // TODO 置顶帖子的获取
+      topicsPresenter.getTopTopics();
+      topicsPresenter.getTopics(offset);
+    }
   }
 
   ITopicViewListener listener = new ITopicViewListener() {

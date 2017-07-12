@@ -27,6 +27,7 @@ public class UserTopicsPresenter implements UserTopicsMVP.Presenter {
   public void showUserCreateTopics(UserTopicsEvent userTopicsEvent) {
     Log.d(TAG, "showUserCreateTopics: " + userTopicsEvent.getTopicList().size());
     if (userTopicsEvent.getTopicList().size() != 0) {
+      mView.hideLoading();
       mView.showTopics(userTopicsEvent.getTopicList());
     }
   }
@@ -34,6 +35,7 @@ public class UserTopicsPresenter implements UserTopicsMVP.Presenter {
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void showUserFavoriteTopics(UserFavoriteTopicsEvent event) {
     Log.d(TAG, "showUserFavoriteTopics: " + event.getTopicList().size());
+    mView.hideLoading();
     mView.showTopics(event.getTopicList());
   }
 

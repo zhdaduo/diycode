@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,6 +16,7 @@ import com.example.bill.delta.AndroidApplication;
 import com.example.bill.delta.R;
 import com.example.bill.delta.bean.news.News;
 import com.example.bill.delta.navigation.Navigator;
+import com.example.bill.delta.ui.base.BaseFragment;
 import com.example.bill.delta.util.LogUtil;
 import com.example.bill.delta.view.Listener.INewsListener;
 import com.example.bill.delta.view.adapter.news.NewsAdapter;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-public class NewsFragment extends Fragment implements NewsBaseMVP.View {
+public class NewsFragment extends BaseFragment implements NewsBaseMVP.View {
 
   private static final String TAG = "NewsFragment";
 
@@ -35,7 +37,7 @@ public class NewsFragment extends Fragment implements NewsBaseMVP.View {
   private boolean isFirstLoad = true;
 
   @BindView(R.id.rv_news) EmptyRecyclerView rv;
-  @BindView(R.id.empty_view) TextView emptyView;
+  @BindView(R.id.empty_view) ProgressBar emptyView;
 
   @Inject NewsBasePresenter newsBasePresenter;
   @Inject Navigator navigator;
@@ -53,6 +55,11 @@ public class NewsFragment extends Fragment implements NewsBaseMVP.View {
         .inject(this);
 
     newsAdapter = new NewsAdapter(newsList, listener);
+  }
+
+  @Override
+  public void fetchData() {
+    newsBasePresenter.readNews(offset);
   }
 
   @Nullable
@@ -110,7 +117,6 @@ public class NewsFragment extends Fragment implements NewsBaseMVP.View {
       newsBasePresenter.bind(this);
       newsBasePresenter.start();
       if (isFirstLoad) {
-        newsBasePresenter.readNews(offset);
         isFirstLoad = false;
       }
     }
