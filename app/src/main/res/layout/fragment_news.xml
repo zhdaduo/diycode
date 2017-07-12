@@ -11,13 +11,10 @@
     android:layout_height="match_parent"
     android:overScrollMode="never"
     />
-  <TextView
+  <ProgressBar
     android:id="@+id/empty_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:text="News 为空"
-    android:textColor="@color/color_secondary_999999"
-    android:textSize="@dimen/text_dimens_17sp"
+    android:layout_height="64dp"
+    android:layout_gravity="center"
     />
 </FrameLayout>

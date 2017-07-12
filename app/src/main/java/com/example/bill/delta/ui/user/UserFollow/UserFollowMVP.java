@@ -11,6 +11,7 @@ public interface UserFollowMVP {
 
     void getUserFollowing(List<UserInfo> userInfoList);
 
+    void hideLoading();
   }
 
   interface Presenter extends BasePresenter<View> {
