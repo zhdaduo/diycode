@@ -14,8 +14,6 @@ public interface TopicsMVP {
 
     void showRetry(String msg);
 
-    void hideRetry();
-
     void showTopics(List<Topic> topicList);
 
     void showTopTopics(List<Topic> topicList);

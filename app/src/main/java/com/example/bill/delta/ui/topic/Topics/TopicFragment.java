@@ -1,16 +1,13 @@
 package com.example.bill.delta.ui.topic.Topics;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -153,21 +150,16 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
 
   @Override
   public void hideLoading() {
-      //rl_progress.setVisibility(View.GONE);
        empty_view.setVisibility(View.GONE);
        rv.setVisibility(View.VISIBLE);
   }
 
   @Override
   public void showRetry(String msg) {
-    //rl_progress.setVisibility(View.GONE);
-    //retry.setVisibility(View.VISIBLE);
+
   }
 
-  @Override
-  public void hideRetry() {
-    //retry.setVisibility(View.GONE);
-  }
+
 
   @Override
   public void showTopics(List<Topic> topicList) {
