@@ -157,9 +157,8 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
   @Override
   public void showRetry(String msg) {
 
+    this.showToastMessage(msg);
   }
-
-
 
   @Override
   public void showTopics(List<Topic> topicList) {
@@ -183,20 +182,6 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
       ((Footer) items.get(items.size() - 1)).setStatus(Footer.STATUS_NORMAL);
     }
     adapter.notifyItemChanged(adapter.getItemCount());
-  }
-
-  @Override
-  public void showTopTopics(List<Topic> topicList) {
-    if (topicList == null) {
-      LogUtil.v(TAG, "showTopTopics: null");
-      return;
-    }
-    LogUtil.v(TAG, "showTopTopics: " + topicList.size());
-    int size = topicList.size();
-    for (int i = 0; i < size; i++) {
-      items.add(i, topicList.get(i));
-    }
-    adapter.notifyDataSetChanged();
   }
 
   @Override
@@ -286,7 +271,6 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
     } else {
       // TODO 置顶帖子的获取
       topicsPresenter.getTopTopics();
-      topicsPresenter.getTopics(offset);
     }
   }
 

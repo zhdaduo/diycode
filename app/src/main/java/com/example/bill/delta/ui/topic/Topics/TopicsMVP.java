@@ -15,8 +15,6 @@ public interface TopicsMVP {
     void showRetry(String msg);
 
     void showTopics(List<Topic> topicList);
-
-    void showTopTopics(List<Topic> topicList);
   }
 
   interface Presenter extends BasePresenter<View> {
@@ -25,9 +23,6 @@ public interface TopicsMVP {
 
   interface Model {
 
-    //void getTopics(Integer offset);
-
-    //void getTopTopics();
     Observable<List<Topic>> getTopicsObservable(Integer offset);
 
     Observable<List<Topic>> getTopTopicsObservable();

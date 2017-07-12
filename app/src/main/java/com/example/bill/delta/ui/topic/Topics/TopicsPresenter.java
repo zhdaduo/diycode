@@ -1,5 +1,6 @@
 package com.example.bill.delta.ui.topic.Topics;
 
+
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.example.bill.delta.bean.topic.Topic;
@@ -7,7 +8,9 @@ import com.example.bill.delta.exception.HttpCodeException;
 import com.example.bill.delta.ui.topic.Topics.TopicsMVP.Model;
 import com.example.bill.delta.ui.topic.Topics.TopicsMVP.View;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -29,29 +32,6 @@ public class TopicsPresenter implements TopicsMVP.Presenter {
     this.mModel = mModel;
     mSubscriptions = new CompositeSubscription();
   }
-
-  /*@Subscribe(threadMode = ThreadMode.MAIN)
-  public void showTopics(TopicsEvent topicsEvent) {
-    Log.d(TAG, "showTopics: " + topicsEvent.getTopicList());
-
-    mView.showTopics(topicsEvent.getTopicList());
-  }
-
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void showTopTopics(TopTopicsEvent topicsEvent) {
-    Log.d(TAG, "showTopTopics: " + topicsEvent.getTopicList());
-    mView.showTopTopics(topicsEvent.getTopicList());
-  }
-
-  public void getTopics(Integer offset) {
-    Log.d(TAG, "getTopics: offset: " + offset);
-    mModel.getTopics(offset);
-  }
-
-  public void getTopTopics() {
-    Log.d(TAG, "getTopTopics");
-    mModel.getTopTopics();
-  }*/
 
   public void getTopics(Integer offset) {
     Subscription subscription = mModel.getTopicsObservable(offset)
@@ -78,27 +58,39 @@ public class TopicsPresenter implements TopicsMVP.Presenter {
   }
 
   public void getTopTopics() {
-    Subscription subscription = mModel.getTopTopicsObservable()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Subscriber<List<Topic>>() {
-          @Override
-          public void onCompleted() {
-            mView.hideLoading();
-          }
+    Subscription subscription =
+        Observable.concat(mModel.getTopTopicsObservable(), mModel.getTopicsObservable(0))
+            .timeout(3, TimeUnit.SECONDS, _onTimeoutObservable())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Subscriber<List<Topic>>() {
+              @Override
+              public void onCompleted() {
+                mView.hideLoading();
+              }
 
-          @Override
-          public void onError(Throwable e) {
-            mView.showRetry(HttpCodeException.getApiExceptionMessage(e));
-          }
+              @Override
+              public void onError(Throwable e) {
+                mView.showRetry(HttpCodeException.getApiExceptionMessage(e));
+              }
 
+              @Override
+              public void onNext(List<Topic> topics) {
+                mView.showTopics(topics);
+                Log.d(TAG, "showTopTopics: " + topics);
+              }
+            });
+    mSubscriptions.add(subscription);
+  }
+
+  private Observable<? extends List<Topic>> _onTimeoutObservable() {
+    return Observable.create(
+        new Observable.OnSubscribe<List<Topic>>() {
           @Override
-          public void onNext(List<Topic> topics) {
-            mView.showTopTopics(topics);
-            Log.d(TAG, "showTopTopics: " + topics);
+          public void call(Subscriber<? super List<Topic>> subscriber) {
+            subscriber.onError(new HttpCodeException("Timeout Error"));
           }
         });
-    mSubscriptions.add(subscription);
   }
 
   @Override
@@ -112,13 +104,10 @@ public class TopicsPresenter implements TopicsMVP.Presenter {
   }
 
   @Override
-  public void start() {
-    //EventBus.getDefault().register(this);
-  }
+  public void start() {}
 
   @Override
   public void stop() {
-    //EventBus.getDefault().unregister(this);
     mSubscriptions.clear();
   }
 }
