@@ -53,7 +53,6 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
   private int offset = 0;
   private int type = 0;
   private String loginName;
-  private boolean isFirstLoad = true;
 
   @BindView(R.id.rv) EmptyRecyclerView rv;
   @BindView(R.id.empty_view) ProgressBar empty_view;
@@ -234,20 +233,16 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
         userFollowPresenter.start();
     }
 
-    LogUtil.v(TAG, "isFirstLoad: " + isFirstLoad);
-    if (isFirstLoad) {
-
-      // 标记 Fragment 已经进行过第一次加载
-      isFirstLoad = false;
-    }
-    if (type == TYPE_CREATE) {
-      userTopicsPresenter.getUserCreateTopics(loginName,
-          offset);
-    } else if (type == TYPE_FAVORITE) {
-      userTopicsPresenter.getUserFavoriteTopics(loginName,
-          offset);
-    } else if (type == TYPE_USERFOLLOWING) {
-      userFollowPresenter.getUserFollowing(loginName, offset);
+    if (!TextUtils.isEmpty(loginName)) {
+      if (type == TYPE_CREATE) {
+        userTopicsPresenter.getUserCreateTopics(loginName,
+            offset);
+      } else if (type == TYPE_FAVORITE) {
+        userTopicsPresenter.getUserFavoriteTopics(loginName,
+            offset);
+      } else if (type == TYPE_USERFOLLOWING) {
+        userFollowPresenter.getUserFollowing(loginName, offset);
+      }
     }
   }
 
@@ -266,12 +261,8 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
 
   @Override
   public void fetchData() {
-    if (!TextUtils.isEmpty(loginName)) {
-
-    } else {
       // TODO 置顶帖子的获取
       topicsPresenter.getTopTopics();
-    }
   }
 
   ITopicViewListener listener = new ITopicViewListener() {

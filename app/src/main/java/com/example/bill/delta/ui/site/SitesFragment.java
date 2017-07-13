@@ -32,7 +32,6 @@ public class SitesFragment extends BaseFragment implements SiteBaseMVP.View {
   private final static int SPAN_COUNT = 2;
   private Items items = new Items();
   private MultiTypeAdapter adapter;
-  private boolean isFirstLoad = true;
 
   @BindView(R.id.rv_site_category) EmptyRecyclerView rvSiteCategory;
   @BindView(R.id.empty_view) ProgressBar emptyView;
@@ -107,9 +106,6 @@ public class SitesFragment extends BaseFragment implements SiteBaseMVP.View {
     if (siteBasePresenter != null) {
       siteBasePresenter.bind(this);
       siteBasePresenter.start();
-      if (isFirstLoad) {
-        isFirstLoad = false;
-      }
     }
   }
 
