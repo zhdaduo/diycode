@@ -3,7 +3,7 @@ package com.example.bill.delta.ui.topic.Topics;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.example.bill.delta.bean.topic.Topic;
-import com.example.bill.delta.exception.HttpCodeException;
+//import com.example.bill.delta.exception.HttpCodeException;
 import com.example.bill.delta.ui.topic.Topics.TopicsMVP.Model;
 import com.example.bill.delta.ui.topic.Topics.TopicsMVP.View;
 import java.util.List;
@@ -30,29 +30,6 @@ public class TopicsPresenter implements TopicsMVP.Presenter {
     mSubscriptions = new CompositeSubscription();
   }
 
-  /*@Subscribe(threadMode = ThreadMode.MAIN)
-  public void showTopics(TopicsEvent topicsEvent) {
-    Log.d(TAG, "showTopics: " + topicsEvent.getTopicList());
-
-    mView.showTopics(topicsEvent.getTopicList());
-  }
-
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void showTopTopics(TopTopicsEvent topicsEvent) {
-    Log.d(TAG, "showTopTopics: " + topicsEvent.getTopicList());
-    mView.showTopTopics(topicsEvent.getTopicList());
-  }
-
-  public void getTopics(Integer offset) {
-    Log.d(TAG, "getTopics: offset: " + offset);
-    mModel.getTopics(offset);
-  }
-
-  public void getTopTopics() {
-    Log.d(TAG, "getTopTopics");
-    mModel.getTopTopics();
-  }*/
-
   public void getTopics(Integer offset) {
     Subscription subscription = mModel.getTopicsObservable(offset)
         .subscribeOn(Schedulers.io())
@@ -65,7 +42,7 @@ public class TopicsPresenter implements TopicsMVP.Presenter {
 
           @Override
           public void onError(Throwable e) {
-            mView.showRetry(HttpCodeException.getApiExceptionMessage(e));
+            //mView.showRetry(HttpCodeException.getApiExceptionMessage(e));
           }
 
           @Override
@@ -89,7 +66,7 @@ public class TopicsPresenter implements TopicsMVP.Presenter {
 
           @Override
           public void onError(Throwable e) {
-            mView.showRetry(HttpCodeException.getApiExceptionMessage(e));
+            //mView.showRetry(HttpCodeException.getApiExceptionMessage(e));
           }
 
           @Override
@@ -112,13 +89,10 @@ public class TopicsPresenter implements TopicsMVP.Presenter {
   }
 
   @Override
-  public void start() {
-    //EventBus.getDefault().register(this);
-  }
+  public void start() {}
 
   @Override
   public void stop() {
-    //EventBus.getDefault().unregister(this);
     mSubscriptions.clear();
   }
 }

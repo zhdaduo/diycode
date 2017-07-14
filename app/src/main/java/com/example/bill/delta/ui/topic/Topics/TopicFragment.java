@@ -1,16 +1,13 @@
 package com.example.bill.delta.ui.topic.Topics;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -153,20 +150,8 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
 
   @Override
   public void hideLoading() {
-      //rl_progress.setVisibility(View.GONE);
        empty_view.setVisibility(View.GONE);
        rv.setVisibility(View.VISIBLE);
-  }
-
-  @Override
-  public void showRetry(String msg) {
-    //rl_progress.setVisibility(View.GONE);
-    //retry.setVisibility(View.VISIBLE);
-  }
-
-  @Override
-  public void hideRetry() {
-    //retry.setVisibility(View.GONE);
   }
 
   @Override
@@ -243,34 +228,32 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
       LogUtil.d(TAG, "loginName: " + loginName + " type: " + type);
     }
 
-      if (type == TYPE_ALL && topicsPresenter != null) {
-        topicsPresenter.bind(this);
-        topicsPresenter.start();
-      } else if (type == TYPE_CREATE && userTopicsPresenter != null) {
-        userTopicsPresenter.bind(this);
-        userTopicsPresenter.start();
-      } else if (type == TYPE_FAVORITE && userTopicsPresenter != null) {
-        userTopicsPresenter.bind(this);
-        userTopicsPresenter.start();
-      } else if (type == TYPE_USERFOLLOWING && userFollowPresenter != null) {
-        userFollowPresenter.bind(this);
-        userFollowPresenter.start();
+    if (type == TYPE_ALL && topicsPresenter != null) {
+      topicsPresenter.bind(this);
+      topicsPresenter.start();
+    } else if (type == TYPE_CREATE && userTopicsPresenter != null) {
+      userTopicsPresenter.bind(this);
+      userTopicsPresenter.start();
+    } else if (type == TYPE_FAVORITE && userTopicsPresenter != null) {
+      userTopicsPresenter.bind(this);
+      userTopicsPresenter.start();
+    } else if (type == TYPE_USERFOLLOWING && userFollowPresenter != null) {
+      userFollowPresenter.bind(this);
+      userFollowPresenter.start();
     }
 
     LogUtil.v(TAG, "isFirstLoad: " + isFirstLoad);
-    if (isFirstLoad) {
 
-      // 标记 Fragment 已经进行过第一次加载
-      isFirstLoad = false;
-    }
-    if (type == TYPE_CREATE) {
-      userTopicsPresenter.getUserCreateTopics(loginName,
-          offset);
-    } else if (type == TYPE_FAVORITE) {
-      userTopicsPresenter.getUserFavoriteTopics(loginName,
-          offset);
-    } else if (type == TYPE_USERFOLLOWING) {
-      userFollowPresenter.getUserFollowing(loginName, offset);
+      if (!TextUtils.isEmpty(loginName)) {
+        if (type == TYPE_CREATE) {
+          userTopicsPresenter.getUserCreateTopics(loginName,
+              offset);
+        } else if (type == TYPE_FAVORITE) {
+          userTopicsPresenter.getUserFavoriteTopics(loginName,
+              offset);
+        } else if (type == TYPE_USERFOLLOWING) {
+          userFollowPresenter.getUserFollowing(loginName, offset);
+        }
     }
   }
 
@@ -289,12 +272,12 @@ public class TopicFragment  extends BaseFragment implements TopicsMVP.View, User
 
   @Override
   public void fetchData() {
-    if (!TextUtils.isEmpty(loginName)) {
-
-    } else {
+    if (isFirstLoad) {
       // TODO 置顶帖子的获取
       topicsPresenter.getTopTopics();
       topicsPresenter.getTopics(offset);
+      // 标记 Fragment 已经进行过第一次加载
+      isFirstLoad = false;
     }
   }
 

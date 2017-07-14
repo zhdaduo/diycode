@@ -26,10 +26,8 @@ public class UserTopicsPresenter implements UserTopicsMVP.Presenter {
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void showUserCreateTopics(UserTopicsEvent userTopicsEvent) {
     Log.d(TAG, "showUserCreateTopics: " + userTopicsEvent.getTopicList().size());
-    if (userTopicsEvent.getTopicList().size() != 0) {
       mView.hideLoading();
       mView.showTopics(userTopicsEvent.getTopicList());
-    }
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)

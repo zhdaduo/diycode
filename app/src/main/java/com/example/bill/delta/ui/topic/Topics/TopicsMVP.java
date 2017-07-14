@@ -12,10 +12,6 @@ public interface TopicsMVP {
 
     void hideLoading();
 
-    void showRetry(String msg);
-
-    void hideRetry();
-
     void showTopics(List<Topic> topicList);
 
     void showTopTopics(List<Topic> topicList);
@@ -27,9 +23,6 @@ public interface TopicsMVP {
 
   interface Model {
 
-    //void getTopics(Integer offset);
-
-    //void getTopTopics();
     Observable<List<Topic>> getTopicsObservable(Integer offset);
 
     Observable<List<Topic>> getTopTopicsObservable();
